@@ -1,7 +1,6 @@
 const int buttonPin = 2;
 const int ledPin = 13;
 
-int buttonState = HIGH;
 int lastButtonState = HIGH;
 int ledState = LOW;
 
@@ -12,20 +11,15 @@ void setup() {
 }
 
 void loop() {
-  buttonState = digitalRead(buttonPin);
+  int currentButtonState = digitalRead(buttonPin);
 
-  if (buttonState == LOW && lastButtonState == HIGH) {
+  // Detect button press (from HIGH → LOW)
+  if (currentButtonState == LOW && lastButtonState == HIGH) {
     ledState = !ledState;
     digitalWrite(ledPin, ledState);
-    delay(50);
+    Serial.println(ledState);
+    delay(50); // debounce
   }
 
-  lastButtonState = buttonState;
-
-  Serial.print("Button: ");
-  Serial.print(buttonState == LOW ? 1 : 0); // 1 = pressed, 0 = not pressed
-  Serial.print(" | LED: ");
-  Serial.println(ledState == HIGH ? 1 : 0); // 1 = ON, 0 = OFF
-
-  delay(100);
+  lastButtonState = currentButtonState;
 }
